@@ -10,7 +10,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin #restricts access from
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
 
-from .models import Task
+from .models import Engagement, Task
 
 class CustomLoginView(LoginView):
     template_name = 'base/login.html'
@@ -36,6 +36,24 @@ class RegisterPage(FormView):
         if self.request.user.is_authenticated:
             return redirect('tasks') #if a user is authenticated, redirect them to task list
         return super(RegisterPage, self).get(*args, **kwargs)
+
+class EngagementList(ListView):
+    model = Engagement
+    context_object_name = 'engagements'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['engagements'] = context['engagements'].filter(user=self.request.user)
+        context['count'] = context['engagements'].count()
+
+        search_input = self.request.GET.get('search-area') or ''
+        if search_input:
+            context['engagements'] = context['engagements'].filter(
+                title__icontains=search_input)
+
+        context['search_input'] = search_input
+
+        return context
 
 class TaskList(LoginRequiredMixin, ListView):
     model = Task
