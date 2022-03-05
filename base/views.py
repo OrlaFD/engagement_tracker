@@ -45,6 +45,7 @@ class EngagementList(ListView):
         context = super().get_context_data(**kwargs)
         context['engagements'] = context['engagements'].filter(user=self.request.user)
         context['count'] = context['engagements'].count()
+        
 
         search_input = self.request.GET.get('search-area') or ''
         if search_input:
