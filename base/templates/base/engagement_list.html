@@ -3,9 +3,8 @@
 
 <div class="header-bar">
     <div>
-        
         <h1>Hello {{request.user|title}}</h1>
-       <h3 style="margin:0">You have {{count}} engagement{{ count|pluralize:"s" }}</h3>
+        <h3 style="margin:0">You have {{count}} engagement{{ count|pluralize:"s" }}</h3>
     </div>
 
     {% if request.user.is_authenticated %}
@@ -29,8 +28,12 @@
         <div class="task-wrapper">
                 <div class="task-title">
                     <a href="{% url 'tasks' %}">{{engagement.name}}</a>
+                    <div>
+                        {% for task in engagement.task_set.all %}
+                        {{ task }}
+                        {% endfor %}
+                    </div>
                 </div>
-            
         </div>
 
     {% empty %}

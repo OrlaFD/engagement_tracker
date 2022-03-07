@@ -4,8 +4,8 @@
 <div class="header-bar">
     <div>
         <a href="{% url 'engagements' %}">&#8592; Back</a>
-        <h2>Hello {{request.user|title}}</h2>
-        <h3 style="margin:0">You have {{count}} incomplete task{{ count|pluralize:"s" }}</h3>
+        <h2>{{request.user|title}}</h2>
+        <h3 style="margin:0;">You have {{count}} incomplete task{{ count|pluralize:"s" }} for this engagement</h3>
     </div>
 
     {% if request.user.is_authenticated %}
