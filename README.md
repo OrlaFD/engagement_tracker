@@ -7,7 +7,7 @@ To run the app:
 python manage.py runserver
  
 Current Issues:
-"When an engagement is clicked on, its associated tasks can be viewed" - I cannot get this to work. For example, if an engagement is clicked on it should open up the list of tasks that are associated with it. At the moment, if an engagement is clicked on it opens up a list of all tasks instead of its associated ones. 
+"When an engagement is clicked on, its associated tasks can be viewed" - I cannot get this to work. For example, if an engagement is clicked on it should open up the list of tasks that are associated with it. At the moment, if an engagement is clicked on it opens up a list of all tasks instead of its associated ones. I have created tasks that are associated with a specific engagement (via the django admin panel) and know that these associations exist as I am able to display these tasks directly next to their engagement name using the commented out code on lines 32-34 in engagement_list.html. However I would like to see the list of associated tasks in the tasks page when the engagement is clicked on.
 
 This may be something to do with dynamic filtering in class-based views: https://docs.djangoproject.com/en/4.0/topics/class-based-views/generic-display/#dynamic-filtering
 
