@@ -27,11 +27,11 @@
     {%  for engagement in engagements %}
         <div class="task-wrapper">
                 <div class="task-title">
-                    <a href="{% url 'tasks' %}">{{engagement.name}}</a>
+                    <a href="{% url 'tasks' %}?engagementid={{engagement.id}}">{{engagement.name}}</a>
                     <div>
-                        {% for task in engagement.task_set.all %}
+                       <!-- {% for task in engagement.task_set.all %}
                         {{ task }}
-                        {% endfor %}
+                        {% endfor %}-->
                     </div>
                 </div>
         </div>
@@ -42,17 +42,4 @@
 </div>
 
 
-<!--table>
-    <tr>
-        <th>Engagement</th>
-        <th></th>
-    </tr>
-    {%  for engagement in engagements %}
-    <tr>
-        <td>{{engagement.name}}</td>
-        <td><a href="{% url 'tasks' %}">View</a></td>
-    </tr>
-    {% endfor %}
-</!--table>
-
-{% endblock content %}-->
+{% endblock content %}
