@@ -1,16 +1,17 @@
 from re import template
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormView
 from django.urls import reverse_lazy
+
 
 from django.contrib.auth.views import LoginView
 from django.contrib.auth.mixins import LoginRequiredMixin #restricts access from unauthenticated users 
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
 
-from .models import Task
+from .models import Engagement, Task
 
 class CustomLoginView(LoginView):
     template_name = 'base/login.html'
@@ -37,14 +38,39 @@ class RegisterPage(FormView):
             return redirect('tasks') #if a user is authenticated, redirect them to task list
         return super(RegisterPage, self).get(*args, **kwargs)
 
-class TaskList(LoginRequiredMixin, ListView):
-    model = Task
-    context_object_name = 'tasks' #looks for _task_list template
-    
+class EngagementList(LoginRequiredMixin, ListView):
+    model = Engagement
+    context_object_name = 'engagements'
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context['engagements'] = context['engagements'].filter(user=self.request.user)
+        context['count'] = context['engagements'].count()
+        
+
+        search_input = self.request.GET.get('search-area') or ''
+        if search_input:
+            context['engagements'] = context['engagements'].filter(
+                name__icontains=search_input)
+
+        context['search_input'] = search_input
+
+        return context
+
+    
+
+class TaskList(LoginRequiredMixin, ListView):
+    model = Task #looks for _task_list template
+    context_object_name = 'tasks' 
+    
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        #query = self.request.GET['engagementid']
         context['tasks'] = context['tasks'].filter(user=self.request.user)
+        #context['tasks'] = context['tasks'].filter(engagement.id = query)
         context['count'] = context['tasks'].filter(complete=False).count()
+        
 
         search_input = self.request.GET.get('search-area') or ''
         if search_input:
@@ -56,6 +82,7 @@ class TaskList(LoginRequiredMixin, ListView):
         return context
     #ensures a user can only get their own data
 
+
 class TaskDetail(LoginRequiredMixin, DetailView):
     model = Task
     context_object_name = 'task'
@@ -64,7 +91,9 @@ class TaskDetail(LoginRequiredMixin, DetailView):
 class TaskCreate(LoginRequiredMixin, CreateView):
     model = Task
     fields = ['title', 'description', 'complete']
-    success_url = reverse_lazy('tasks') #redirects to list view page once form is submitted 
+    success_url = reverse_lazy('tasks') 
+    #redirects to list view page once form is submitted
+    
 
     def form_valid(self, form):
         form.instance.user = self.request.user
@@ -76,6 +105,7 @@ class TaskUpdate(LoginRequiredMixin, UpdateView):
     model = Task
     fields = ['title', 'description', 'complete']
     success_url = reverse_lazy('tasks')
+  
 
 class DeleteView(LoginRequiredMixin, DeleteView):
     model = Task
