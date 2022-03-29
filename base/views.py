@@ -1,3 +1,4 @@
+from asyncio.log import logger
 from re import template
 from django.shortcuts import redirect, render
 from django.views.generic.list import ListView
@@ -12,6 +13,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
 
 from .models import Engagement, Task
+import logging
 
 class CustomLoginView(LoginView):
     template_name = 'base/login.html'
@@ -44,7 +46,9 @@ class EngagementList(LoginRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['engagements'] = context['engagements'].filter(user=self.request.user)
+        context['engagements'] = context['engagements'].filter(user=self.request.user) 
+        print("should get engagements")
+        print(context['engagements'].filter(user=self.request.user))
         context['count'] = context['engagements'].count()
         
 
@@ -66,9 +70,12 @@ class TaskList(LoginRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        #query = self.request.GET['engagementid']
+        #ensures a user can only get their own data
         context['tasks'] = context['tasks'].filter(user=self.request.user)
-        #context['tasks'] = context['tasks'].filter(engagement.id = query)
+        # This will query the colection from the sql db, it will filter tasks based on the query param
+        # the query parm is then used to filter to retrieve the tasks for each associated engagment.
+        context['tasks'] = context['tasks'].filter(engagement = self.request.GET['engagementid'])
+
         context['count'] = context['tasks'].filter(complete=False).count()
         
 
@@ -80,7 +87,7 @@ class TaskList(LoginRequiredMixin, ListView):
         context['search_input'] = search_input
 
         return context
-    #ensures a user can only get their own data
+   
 
 
 class TaskDetail(LoginRequiredMixin, DetailView):
