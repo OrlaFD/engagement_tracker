@@ -72,13 +72,12 @@ class TaskList(LoginRequiredMixin, ListView):
         context = super().get_context_data(**kwargs)
         #ensures a user can only get their own data
         context['tasks'] = context['tasks'].filter(user=self.request.user)
-        # This will query the colection from the sql db, it will filter tasks based on the query param
+
+        # This will query the collection from the db, it will filter tasks based on the query param
         # the query parm is then used to filter to retrieve the tasks for each associated engagment.
         context['tasks'] = context['tasks'].filter(engagement = self.request.GET['engagementid'])
-
         context['count'] = context['tasks'].filter(complete=False).count()
         
-
         search_input = self.request.GET.get('search-area') or ''
         if search_input:
             context['tasks'] = context['tasks'].filter(
