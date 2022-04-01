@@ -47,8 +47,6 @@ class EngagementList(LoginRequiredMixin, ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['engagements'] = context['engagements'].filter(user=self.request.user) 
-        print("should get engagements")
-        print(context['engagements'].filter(user=self.request.user))
         context['count'] = context['engagements'].count()
         
 
