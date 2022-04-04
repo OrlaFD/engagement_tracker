@@ -3,13 +3,13 @@ from django.urls import reverse
 from base.models import Engagement, Task, User
 from base.views import CustomLoginView, EngagementList, RegisterPage, TaskCreate, TaskDetail, TaskList, TaskUpdate, DeleteView, UserCreationForm
 
-class TestViews(TestCase):
-
-# self.view is equal to an instantiated object of EngagementList view
+class TestEngagementView(TestCase):
+    """
+    Test class for engagement list view
+    """
     def setUp(self):
         self.view = EngagementList
 
-#setting attributes and coding in custom stuff for the attributes
     def test_engagement_list_attrs(self):
         self.assertEqual(self.view.model, Engagement)
         self.assertEqual(self.view.context_object_name, 'engagements')
@@ -23,6 +23,9 @@ class TestViews(TestCase):
         
 
 class TestTaskListView(TestCase):
+    """
+    Test class for task list view
+    """   
     def setUp(self):
         self.view = TaskList
 
@@ -39,6 +42,9 @@ class TestTaskListView(TestCase):
     
 
 class TestTaskDetailView(TestCase):
+    """
+    Test class for task detail view
+    """
     def setUp(self):
         self.view = TaskDetail
 
@@ -56,6 +62,9 @@ class TestTaskDetailView(TestCase):
     
 
 class TestTaskCreateView(TestCase):
+    """
+    Test class for task create view
+    """
     def setUp(self):
         self.view = TaskCreate
         self.user = User.objects.create_user(username='john', password='123')
@@ -73,6 +82,9 @@ class TestTaskCreateView(TestCase):
 
 
 class TestTaskUpdateView(TestCase):
+    """
+    Test class for task update view
+    """
     def setUp(self):
         self.view = TaskUpdate
 
@@ -89,6 +101,9 @@ class TestTaskUpdateView(TestCase):
 
 
 class TestDeleteView(TestCase):
+    """
+    Test class for task delete view
+    """
     def setUp(self):
         self.view = DeleteView
 
@@ -105,6 +120,9 @@ class TestDeleteView(TestCase):
 
 
 class TestCustomLoginView(TestCase):
+    """
+    Test class for login view
+    """
     def setUp(self):
         self.view = CustomLoginView
 
@@ -121,6 +139,9 @@ class TestCustomLoginView(TestCase):
 
 
 class TestRegisterPageView(TestCase):
+    """
+    Test class for register view
+    """
     def setUp(self):
         self.view = RegisterPage
 
