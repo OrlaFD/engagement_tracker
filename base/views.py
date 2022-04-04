@@ -1,6 +1,5 @@
-from asyncio.log import logger
 from re import template
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormView
@@ -13,7 +12,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
 
 from .models import Engagement, Task
-import logging
+
 
 class CustomLoginView(LoginView):
     template_name = 'base/login.html'
@@ -47,8 +46,6 @@ class EngagementList(LoginRequiredMixin, ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['engagements'] = context['engagements'].filter(user=self.request.user) 
-        print("should get engagements")
-        print(context['engagements'].filter(user=self.request.user))
         context['count'] = context['engagements'].count()
         
 
@@ -64,7 +61,7 @@ class EngagementList(LoginRequiredMixin, ListView):
     
 
 class TaskList(LoginRequiredMixin, ListView):
-    model = Task #looks for _task_list template
+    model = Task #looks for task_list template
     context_object_name = 'tasks' 
     
 
@@ -72,13 +69,12 @@ class TaskList(LoginRequiredMixin, ListView):
         context = super().get_context_data(**kwargs)
         #ensures a user can only get their own data
         context['tasks'] = context['tasks'].filter(user=self.request.user)
-        # This will query the colection from the sql db, it will filter tasks based on the query param
+
+        # This will query the collection from the db, it will filter tasks based on the query param
         # the query parm is then used to filter to retrieve the tasks for each associated engagment.
         context['tasks'] = context['tasks'].filter(engagement = self.request.GET['engagementid'])
-
         context['count'] = context['tasks'].filter(complete=False).count()
         
-
         search_input = self.request.GET.get('search-area') or ''
         if search_input:
             context['tasks'] = context['tasks'].filter(
