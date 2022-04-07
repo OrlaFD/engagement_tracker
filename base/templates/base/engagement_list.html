@@ -12,7 +12,7 @@
     {% else %}
     <a href="{% url 'login' %}">Login</a>
     {% endif %}
-    <!--condition so that if a user is authenticated 'logout' will show. Else user is prompted to login.--> 
+    <!--condition so that if a user is authenticated 'logout' will show. Otherwise user is prompted to login.--> 
 </div>
 
 <div id="search-add-wrapper">
@@ -27,12 +27,7 @@
     {%  for engagement in engagements %}
         <div class="task-wrapper">
                 <div class="task-title">
-                    <a href="{% url 'tasks' %}?engagementid={{engagement.id}}">{{engagement.name}}</a>
-                    <div>
-                       <!-- {% for task in engagement.task_set.all %}
-                        {{ task }}
-                        {% endfor %}-->
-                    </div>
+                    <a href="/tasks/{{engagement.id}}">{{engagement.name}}</a>
                 </div>
         </div>
 

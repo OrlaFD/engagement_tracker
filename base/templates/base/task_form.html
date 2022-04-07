@@ -2,9 +2,8 @@
 {% block content %}
 
 <div class="header-bar">
-    <a href="{% url 'tasks' %}?engagementid={{task.engagement.id}}">&#8592; Back</a>
+    <a href="http://127.0.0.1:8000/tasks/{{task.engagement.id}}">&#8592;Go Back</a>
 </div>
-
 
 <div class="card-body">
     <form method="POST" action="">
