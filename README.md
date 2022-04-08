@@ -27,7 +27,10 @@ To run the application: ```python manage.py runserver```
 * Factory Boy: Version 2.4.0
 * Class-Based Views and Mixins
 
+### Comments
+
+The source code contains comments to aid understanding of how the code works and why.
 
 ### References 
 
-Views.py contains the references used in this project's source code.
+Views.py and Main.html contain the references used in this project's source code.
