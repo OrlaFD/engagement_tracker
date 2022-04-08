@@ -1,6 +1,14 @@
 {% extends 'base/main.html' %}
 {% block content %}
 
+<div class="message">
+    {% if messages %}
+            {% for message in messages %}
+                {{ message }}
+            {% endfor %}
+    {% endif %}
+</div>
+
 <div class="header-bar">
     <div>
         <h1>Hello {{request.user|title}}</h1>

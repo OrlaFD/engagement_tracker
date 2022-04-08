@@ -1,8 +1,25 @@
+"""
+Course: Digital and Technology Solutions
+Module: Software Engineering & Agile
+Project Name: Engagement Tracker Application
+Author: Orla Fletcher-Dowd
+Version: 1
+Date: 08.04.22
+
+References used within this application are as follows: 
+Ivanov, D. (2022) What are Django class based views & should you use them? Available at: 
+https://www.dennisivy.com/post/django-class-based-views/ (accessed: 01/03/22) [1]
+
+Django Documentation (2022) Class-based Views. Available at: 
+https://docs.djangoproject.com/en/4.0/topics/class-based-views/ (accessed: 010/03/22) [2]
+"""
+
 from django.shortcuts import redirect
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormView
 from django.urls import reverse_lazy
+from django.contrib.messages.views import SuccessMessageMixin
 
 from django.contrib.auth.views import LoginView
 from django.contrib.auth.mixins import LoginRequiredMixin #restricts access from unauthenticated users 
@@ -11,6 +28,7 @@ from django.contrib.auth import login
 
 from .models import Engagement, Task
 
+#***** Ivanov (2022) [1] - START
 #Login View 
 class CustomLoginView(LoginView):
     template_name = 'base/login.html'
@@ -42,6 +60,7 @@ class RegisterPage(FormView):
         if self.request.user.is_authenticated:
             return redirect('engagements') 
         return super(RegisterPage, self).get(*args, **kwargs)
+#***** Ivanov (2022) [1] - END 
 
 #List View for Engagement
 class EngagementList(LoginRequiredMixin, ListView):
@@ -96,11 +115,13 @@ class TaskDetail(LoginRequiredMixin, DetailView):
     template_name = 'base/task.html'
 
 #Create View for Task
-class TaskCreate(LoginRequiredMixin, CreateView):
+class TaskCreate(SuccessMessageMixin, LoginRequiredMixin, CreateView):
     model = Task
-    fields = ['title', 'description', 'complete', 'engagement']
-    success_url = reverse_lazy('engagements') 
+    fields = ['title', 'description', 'engagement', 'complete']
+
     #Redirects to engagements page once form is submitted
+    success_url = reverse_lazy('engagements')
+    success_message = "Task created successfully" 
     
     def form_valid(self, form):
         form.instance.user = self.request.user

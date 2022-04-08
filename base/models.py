@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+#Engagement Model
 class Engagement(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     name = models.CharField(max_length=200)
@@ -8,6 +9,7 @@ class Engagement(models.Model):
     def __str__(self):
         return self.name
 
+#Task Model
 class Task(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     engagement = models.ForeignKey(Engagement, on_delete=models.CASCADE, null=True, blank=True)

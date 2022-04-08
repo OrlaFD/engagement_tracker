@@ -71,7 +71,7 @@ class TestTaskCreateView(TestCase):
 
     def test_task_create_attrs(self):
         self.assertEqual(self.view.model, Task)
-        self.assertEqual(self.view.fields, ['title', 'description', 'complete'])
+        self.assertEqual(self.view.fields, ['title', 'description', 'complete', 'engagement'])
         
     def test_task_create_GET(self):
         client = Client()
@@ -109,7 +109,6 @@ class TestDeleteView(TestCase):
 
     def test_task_delete_attrs(self):
         self.assertEqual(self.view.model, Task)
-        self.assertEqual(self.view.context_object_name, 'task')
         
     def test_task_delete_GET(self):
         client = Client()
