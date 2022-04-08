@@ -19,6 +19,7 @@ from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormView
 from django.urls import reverse_lazy
+from django.contrib.messages.views import SuccessMessageMixin
 
 from django.contrib.auth.views import LoginView
 from django.contrib.auth.mixins import LoginRequiredMixin #restricts access from unauthenticated users 
@@ -114,11 +115,13 @@ class TaskDetail(LoginRequiredMixin, DetailView):
     template_name = 'base/task.html'
 
 #Create View for Task
-class TaskCreate(LoginRequiredMixin, CreateView):
+class TaskCreate(SuccessMessageMixin, LoginRequiredMixin, CreateView):
     model = Task
     fields = ['title', 'description', 'engagement', 'complete']
-    success_url = reverse_lazy('engagements') 
+
     #Redirects to engagements page once form is submitted
+    success_url = reverse_lazy('engagements')
+    success_message = "Task created successfully" 
     
     def form_valid(self, form):
         form.instance.user = self.request.user
