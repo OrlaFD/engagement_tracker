@@ -1,3 +1,19 @@
+"""
+Course: Digital and Technology Solutions
+Module: Software Engineering & Agile
+Project Name: Engagement Tracker Application
+Author: Orla Fletcher-Dowd
+Version: 1
+Date: 08.04.22
+
+References used within this application are as follows: 
+Ivanov, D. (2022) What are Django class based views & should you use them? Available at: 
+https://www.dennisivy.com/post/django-class-based-views/ (accessed: 01/03/22) [1]
+
+Django Documentation (2022) Class-based Views. Available at: 
+https://docs.djangoproject.com/en/4.0/topics/class-based-views/ (accessed: 010/03/22) [2]
+"""
+
 from django.shortcuts import redirect
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
@@ -11,6 +27,7 @@ from django.contrib.auth import login
 
 from .models import Engagement, Task
 
+#***** Ivanov (2022) [1] - START
 #Login View 
 class CustomLoginView(LoginView):
     template_name = 'base/login.html'
@@ -42,6 +59,7 @@ class RegisterPage(FormView):
         if self.request.user.is_authenticated:
             return redirect('engagements') 
         return super(RegisterPage, self).get(*args, **kwargs)
+#***** Ivanov (2022) [1] - END 
 
 #List View for Engagement
 class EngagementList(LoginRequiredMixin, ListView):
@@ -98,7 +116,7 @@ class TaskDetail(LoginRequiredMixin, DetailView):
 #Create View for Task
 class TaskCreate(LoginRequiredMixin, CreateView):
     model = Task
-    fields = ['title', 'description', 'complete', 'engagement']
+    fields = ['title', 'description', 'engagement', 'complete']
     success_url = reverse_lazy('engagements') 
     #Redirects to engagements page once form is submitted
     
