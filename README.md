@@ -27,3 +27,7 @@ To run the application: ```python manage.py runserver```
 * Factory Boy: Version 2.4.0
 * Class-Based Views and Mixins
 
+
+### References 
+
+Views.py contains the references used in this project's source code.
